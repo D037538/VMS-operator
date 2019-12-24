@@ -8,6 +8,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Email;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -19,6 +22,7 @@ public class Operator {
 	private long id;
 	private String operatorName;
 	private String operatorCode;
+	@Email@NotEmpty
 	private String email;
     	public String getEmail() {
 		return email;
