@@ -3,6 +3,7 @@ package com.operator.controller;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -57,7 +58,7 @@ public class OperatorController {
 		List<Operator> operator = operatorService.getAllOperator();
 		return operator;
 	}
-
+	
 	/**
 	 * method for call visitor microservice get all visitor list
 	 * 
@@ -78,13 +79,18 @@ public class OperatorController {
 	 * @return record by visitor id
 	 * @throws JsonProcessingException
 	 */
-	@GetMapping("/operatorsById/{id}")
-	public Visitor findme(@PathVariable Integer id) throws JsonProcessingException {
+	@GetMapping("/operators/{id}")
+	public Optional<Operator> findme(@PathVariable Integer id) throws JsonProcessingException {
+		System.out.println("id in controller is:" + id);
+		return operatorService.getOperatorById(id);
+
+	}
+	@GetMapping("/visitor/{id}")
+	public Visitor findByVisitorId(@PathVariable Integer id) throws JsonProcessingException {
 		System.out.println("id in controller is:" + id);
 		return operatorService.getListByVisitorId(id);
 
 	}
-
 	/**
 	 * method for update visitor status by id
 	 * 

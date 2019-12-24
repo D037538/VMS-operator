@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.io.InputStream;
 import javax.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -60,7 +61,12 @@ public class OperatorService {
 	public List<Operator> getAllOperator() {
 		return operatorRepository.findAll();
 	}
-
+      
+	public Optional<Operator> getOperatorById(long id) {
+		
+		return operatorRepository.findById(id);
+		
+	}
 	/**
 	 * method for call visitor microservice get all visitor list
 	 * 
@@ -82,7 +88,7 @@ public class OperatorService {
 	public Visitor getListByVisitorId(long id) throws JsonProcessingException {
 		int status = 1;
 
-		String url = "http://localhost:8084/visitor/visitorList/" + id;
+		String url = "http://localhost:8084/visitor/visitorList/"+id;
 		Visitor visitorlist = restTemplate.getForObject(url, Visitor.class);
 		System.out.println("RESPONSE " + visitorlist.getStatus());
 		ObjectMapper mapper = new ObjectMapper();

@@ -38,22 +38,25 @@
 <th>Mobile No</th><th>Address</th>
 <th>Country</th><th>State</th><th>City</th>
 <th>Id Proof</th><th>Contact tPerson Name</th>
-<th>Edit</th><th>Delete</th></tr>  
+<th>Status</th>
+<th>Edit</th><th>Delete</th><th>Print</th></tr>  
 
-   <c:forEach var="student" items="${list}"> 
+   <c:forEach var="visitor" items="${list}"> 
    <tr>  
-   <td>${student.id}</td>  
-   <td>${student.name}</td> 
-   <td>${student.email}</td>  
-   <td>${student.mobileNo}</td> 
-     <td>${student.address}</td> 
-   <td>${student.country}</td>  
-   <td>${student.state}</td>  
-   <td>${student.city}</td>  
-   <td>${student.idProof}</td> 
-   <td>${student.contactPersonName}</td>  
-   <td><a href="/editstudent/${student.id}">Edit</a></td>  
-   <td><a href="/deletestudent/${student.id}">Delete</a></td>  
+   <td>${visitor.id}</td>  
+   <td>${visitor.name}</td> 
+   <td>${visitor.email}</td>  
+   <td>${visitor.mobileNo}</td> 
+     <td>${visitor.address}</td> 
+   <td>${visitor.country}</td>  
+   <td>${visitor.state}</td>  
+   <td>${visitor.city}</td>  
+   <td>${visitor.idProof}</td> 
+   <td>${visitor.contactPersonName}</td>  
+   <td>${visitor.status}</td>  
+   <td><a href="/editvisitor/${visitor.id}">Edit</a></td>  
+   <td><a href="/deletestudent/${visitor.id}">Delete</a></td>  
+     <td><a href="/printticket/${visitor.id}">Print</a></td>  
    </tr>  
    </c:forEach> 
    
