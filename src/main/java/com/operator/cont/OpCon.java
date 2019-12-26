@@ -37,6 +37,7 @@ public class OpCon {
 	
 	@Autowired
 	private IVisitorService iVisitorService;
+	
 	@RequestMapping("/viewvisitorservice")  
     public ModelAndView viewstudents() throws JsonProcessingException{  
         Visitor[] list=operatorService.getAllVisitorList();
@@ -69,7 +70,7 @@ public class OpCon {
 		//redirectAttributes.addFlashAttribute("message", "Student " + student.getFirstName()+" "+student.getLastName() + " saved");
 		return "redirect:/viewvisitorservice";//will redirect to viewemp request mapping  
 	}
-	/* It opens the record for the given id in editstudent page */
+	/* It opens the record for the given id in editvisitor page */
 	@RequestMapping(value = "/editvisitor/{id}")
 	public String edit(@PathVariable int id, ModelMap model) throws JsonProcessingException {
 		Visitor visitor =  operatorService.getListByVisitorId(id);
@@ -77,13 +78,14 @@ public class OpCon {
 		return "editvisitor";
 
 	}
+	
 	@RequestMapping(value = "/editsave", method = RequestMethod.POST)
 	public ModelAndView editsave(@ModelAttribute("visitor") Visitor visitor) {
 		long id=visitor.getId();
-		System.out.println("Edit id is:"+id);
-		operatorService.updateVisitorStatus(id);
+			operatorService.updateVisitorStatus(id);
 		return new ModelAndView("redirect:/viewvisitorservice");
 	}
+	
 	@RequestMapping(value = "/printticket/{id}")
 	public String printTicket(@PathVariable int id, ModelMap model,HttpServletResponse response) throws IOException, SQLException, JRException {
 		System.out.println("Pint id in controller"+id);

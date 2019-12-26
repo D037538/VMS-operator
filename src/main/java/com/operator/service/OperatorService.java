@@ -26,6 +26,7 @@ import com.operator.dto.OperatorDto;
 import com.operator.model.Operator;
 import com.operator.model.Visitor;
 import com.operator.repository.OperatorRepository;
+import com.operator.repository.UpdateVisitor;
 import com.operator.repository.VisitorRepository;
 import java.sql.Connection;
 
@@ -37,6 +38,8 @@ public class OperatorService {
 	private OperatorRepository operatorRepository;
 	@Autowired
 	private VisitorRepository visitorRepository;
+	@Autowired
+	private UpdateVisitor updateVisitor;
 	RestTemplate restTemplate = new RestTemplate();
 
 	/**
@@ -107,11 +110,11 @@ public class OperatorService {
 		// TODO Auto-generated method stub
 		if (visitorRepository.findById(id).isPresent()) {
 			Visitor visitor = visitorRepository.findById(id).get();
-			if (visitor.getId() == id) {
-				if (visitor.getStatus() == 0)
-					visitor.setStatus(1);
-				Visitor updateVisitor = visitorRepository.save(visitor);
-			}
+		
+					updateVisitor.updateStatusById(id);
+					//visitor.setStatus(1);
+				//Visitor updateVisitor = visitorRepository.save(visitor);
+			
 		}
 		return "Visitor updated successfully";
 

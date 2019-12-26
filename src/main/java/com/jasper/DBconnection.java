@@ -10,7 +10,7 @@ public class DBconnection {
     {
         try
         {
-                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/visitor","root","root");
+                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/operatordb","root","root");
                     return con;
         }
         

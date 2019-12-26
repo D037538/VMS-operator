@@ -17,10 +17,18 @@
 
  	<div class="form-container">
  	
- 	<h1>Update Status</h1>
+ 	<h1>Edit Visitor Details</h1>
  	
 	<form:form method="POST" modelAttribute="visitor"  class="form-horizontal" action="/editsave">
-
+ <div class="row">
+			<div class="form-group col-md-12">
+				<label class="col-md-3 control-lable" for="id">Id</label>
+				<div class="col-md-7">
+					<form:input type="text" path="id" id="id" class="form-control input-sm"/>
+					
+				</div>
+			</div>
+		</div>
  <div class="row">
 			<div class="form-group col-md-12">
 				<label class="col-md-3 control-lable" for="name">First Name</label>
@@ -74,7 +82,7 @@
 				<label class="col-md-3 control-lable" for="idProof">Id Proof</label>
 				<div class="col-md-7">
 					<form:input type="text" path="idProof" id="idProof" class="form-control input-sm"/>
-					<
+				
 				</div>
 			</div>
 		</div>
