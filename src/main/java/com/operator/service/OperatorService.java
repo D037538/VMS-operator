@@ -123,19 +123,19 @@ public class OperatorService {
 
 /**
  * method for generate Ticket print
- * @param visitor_id
+ * @param id
  * @param response
  * @return
  * @throws IOException
  * @throws SQLException
  * @throws JRException
  */
-	public int ticketPrint(int visitor_id, HttpServletResponse response) throws IOException, SQLException, JRException {
-		System.out.println("ticket visitor id" + visitor_id);
+	public int ticketPrint(long id, HttpServletResponse response) throws IOException, SQLException, JRException {
+		System.out.println("ticket visitor id" + id);
 		InputStream stream = getClass().getResourceAsStream("/TicketPrint.jrxml");
 		JasperReport jasperReport = JasperCompileManager.compileReport(stream);
 		Map<String, Object> params = new HashMap<>();
-		params.put("visitor_id", visitor_id);
+		params.put("visitor_id", id);
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, conn);
 		JasperExportManager.exportReportToPdfStream(jasperPrint, response.getOutputStream());
 		response.getOutputStream().flush();

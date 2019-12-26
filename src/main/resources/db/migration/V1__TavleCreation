@@ -1,0 +1,27 @@
+CREATE TABLE `visitor`
+(
+   `id` int (11) NOT NULL AUTO_INCREMENT,
+   `name` varchar (255) DEFAULT NULL,
+   `email` varchar (255) DEFAULT NULL,
+   mobileNo varchar (255) DEFAULT NULL,
+   address varchar (255) DEFAULT NULL,
+   country varchar (255) DEFAULT NULL,
+   state varchar (255) DEFAULT NULL,
+   city varchar (255) DEFAULT NULL,
+   idProof varchar (255) DEFAULT NULL,
+   contactPersonName varchar (255) DEFAULT NULL,
+   reference varchar (255) DEFAULT NULL,
+   contactPersonEmail varchar (255) DEFAULT NULL,
+   reasonForVisit varchar (255) DEFAULT NULL,
+   contactPersonMobile varchar (255) DEFAULT NULL,
+   status int (10) DEFAULT 0,
+   PRIMARY KEY (`id`)
+)
+ENGINE= InnoDB AUTO_INCREMENT= 5 DEFAULT CHARSET= latin1;
+CREATE TABLE `operator` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `operatorName` varchar(255) DEFAULT NULL,
+  `operatorCode` varchar(255) DEFAULT NULL,
+   email varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;

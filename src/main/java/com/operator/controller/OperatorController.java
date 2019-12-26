@@ -105,18 +105,18 @@ public class OperatorController {
 	/**
 	 * methods for print token print
 	 * 
-	 * @param response
+	 * @param response1
 	 * @param visitor_id
 	 * @throws JRException
 	 * @throws IOException
 	 * @throws SQLException
 	 */
 	@GetMapping("/printToken/{id}")
-	public void getRpt1(HttpServletResponse response, @PathVariable int visitor_id)
+	public void getRpt1(HttpServletResponse response, @PathVariable int visitor_id, HttpServletResponse response1)
 			throws JRException, IOException, SQLException {
 
 		System.out.println("visitor_id" + visitor_id);
-		operatorService.ticketPrint(visitor_id, response);
+		operatorService.ticketPrint(visitor_id, response1);
 		operatorService.sendMailToContactPerson();
 	}
 }

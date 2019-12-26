@@ -17,14 +17,8 @@ public class Visitor implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String name;
-	private String bloodGroup;
-	public String getBloodGroup() {
-		return bloodGroup;
-	}
+	//private String bloodGroup;
 
-	public void setBloodGroup(String bloodGroup) {
-		this.bloodGroup = bloodGroup;
-	}
 
 	private String email;
 	private long mobileNo;
