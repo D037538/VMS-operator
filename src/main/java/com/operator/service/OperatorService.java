@@ -13,6 +13,7 @@ import org.apache.jasper.JasperException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -40,7 +41,10 @@ public class OperatorService {
 	private VisitorRepository visitorRepository;
 	@Autowired
 	private UpdateVisitor updateVisitor;
-	RestTemplate restTemplate = new RestTemplate();
+	@Autowired
+	private RestTemplate restTemplate;
+	@Autowired
+	private WebClient.Builder webClientBuilder;
 
 	/**
 	 * method for register operator
@@ -98,9 +102,15 @@ public class OperatorService {
 		String visitorjson = mapper.writeValueAsString(visitorlist);
 		System.out.println("expense list is:" + visitorjson);
 		System.out.println("URL" + url);
+		/*
+		Alternative WebClient way
+		Movie movie = webClientBuilder.build().get().uri("http://localhost:8084/visitor/visitorList/"+id)
+		.retrieve().bodyToMono(Visitor.class).block();
+		*/
 		return visitorlist;
 
 	}
+
 /**
  * method for update status
  * @param id
@@ -161,4 +171,6 @@ public class OperatorService {
 		return null;
 
 	}
+//http://localhost:8888/email/sendemail	
+	
 }
