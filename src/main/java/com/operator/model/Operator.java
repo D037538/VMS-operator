@@ -17,6 +17,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "operator")
 public class Operator {
+	
+	public Operator(long id, String operatorName, String operatorCode, @Email @NotEmpty String email, int i) {
+		super();
+		this.id = id;
+		this.operatorName = operatorName;
+		this.operatorCode = operatorCode;
+		this.email = email;
+	}
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;

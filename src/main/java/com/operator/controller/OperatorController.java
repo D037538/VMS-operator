@@ -54,8 +54,8 @@ public class OperatorController {
 	 * @return object of register object
 	 */
 	@PostMapping("/registerOperator")
-	public Operator registerOperator(@RequestBody OperatorDto operatorDto) {
-		return operatorService.registerOperator(operatorDto);
+	public Operator registerOperator(@RequestBody Operator operator) {
+		return operatorService.registerOperator(operator);
 	}
 /*
  
