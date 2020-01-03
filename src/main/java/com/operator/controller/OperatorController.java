@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -57,7 +58,7 @@ public class OperatorController {
 	 * @return object of register object
 	 */
 	@PostMapping("/registerOperator")
-	public Operator registerOperator(@RequestBody Operator operator) {
+	public Operator registerOperator(@Valid@RequestBody Operator operator) {
 		return operatorService.registerOperator(operator);
 	}
 /*

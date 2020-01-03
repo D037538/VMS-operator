@@ -13,7 +13,12 @@ import com.operator.model.ExceptionResponse;
 
 @ControllerAdvice
 public class ExceptionHandlerControllerAdvice {
-
+/**
+ * 
+ * @param exception
+ * @param request
+ * @return
+ */
 	@ExceptionHandler(ResourceNotFoundException.class)
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
 	public @ResponseBody ExceptionResponse handleResourceNotFound(final ResourceNotFoundException exception,
