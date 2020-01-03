@@ -52,11 +52,12 @@ public class OperatorService {
 	 * @param operatorDto
 	 * @return
 	 */
-	public Operator registerOperator(OperatorDto operatorDto) {
-		Operator operator = new Operator();
-		operator.setOperatorName(operatorDto.getOperatorName());
-		operator.setOperatorCode(operatorDto.getOperatorCode());
-		operatorRepository.save(operator);
+	public Operator registerOperator(Operator operator) {
+		/*
+		 * Operator operator = new Operator();
+		 * operator.setOperatorName(operatorDto.getOperatorName());
+		 * operator.setOperatorCode(operatorDto.getOperatorCode());
+		 */operatorRepository.save(operator);
 		return operator;
 	}
 
@@ -172,5 +173,10 @@ public class OperatorService {
 
 	}
 //http://localhost:8888/email/sendemail	
+	
+	public String deleteOperator(Operator operator) {
+		operatorRepository.delete(operator);
+		return "delete successfully";
+	}
 	
 }

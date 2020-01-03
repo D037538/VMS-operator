@@ -25,6 +25,27 @@ public class Visitor implements Serializable {
 	private String address;
 	private String country;
 	private String state;
+	public Visitor(long id, String name, String email, long mobileNo, String address, String country, String state,
+			String city, String idProof, String contactPersonName, String contactPersonEmail, String reference,
+			String reasonForVisit, String contactPersonMobile, int status) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.email = email;
+		this.mobileNo = mobileNo;
+		this.address = address;
+		this.country = country;
+		this.state = state;
+		this.city = city;
+		this.idProof = idProof;
+		this.contactPersonName = contactPersonName;
+		this.contactPersonEmail = contactPersonEmail;
+		this.reference = reference;
+		this.reasonForVisit = reasonForVisit;
+		this.contactPersonMobile = contactPersonMobile;
+		this.status = status;
+	}
+
 	private String city;
 	private String idProof;
 	private String contactPersonName;
