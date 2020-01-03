@@ -14,17 +14,20 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.operator.exceptionhandling.ResourceNotFoundException;
 import com.operator.model.Visitor;
 import com.operator.model.VisitorDto;
 import com.operator.service.IVisitorService;
 import com.operator.service.OperatorService;
+import com.operator.service.VisitorServiceException;
 
 import net.sf.jasperreports.engine.JRException;
 
-@Controller
+@RestController
 public class OpCon {
 	@Autowired
 	private OperatorService operatorService;
@@ -137,4 +140,43 @@ public class OpCon {
 		countries.add("Solapur ");
 		return countries;
 	}
-}
+	//Happy path, an visitor is returned as response
+		@RequestMapping(value = "/visitor", method = RequestMethod.GET)
+		public Visitor[] getVisitor1() throws ResourceNotFoundException, VisitorServiceException, JsonProcessingException {
+			Visitor[] visitor =operatorService.getAllVisitorList();
+
+			if (visitor == null) {
+				throw new ResourceNotFoundException("Visitor not found");
+			}
+			return visitor;
+		}
+	    //no visitor found so ResourceNotFoundException is thrown
+		@RequestMapping(value = "/visitor2", method = RequestMethod.GET)
+		public Visitor getVisitor2() throws ResourceNotFoundException, VisitorServiceException {
+			try {
+				Visitor visitor = operatorService.getVisitorNull();
+				if (visitor == null) {
+					throw new ResourceNotFoundException("Visitor not found");
+				}
+
+				return visitor;
+			} catch (VisitorServiceException e) {
+				throw new VisitorServiceException("Internal Server Exception while getting exception");
+			}
+		}
+		
+		 //Some exception is thrown by service layer
+		@RequestMapping(value = "/visitor3", method = RequestMethod.GET)
+		public Visitor getVisitor() throws ResourceNotFoundException, VisitorServiceException {
+			try {
+				Visitor visitor = operatorService.getVisitorException();
+				if (visitor == null) {
+					throw new ResourceNotFoundException("Visitor not found");
+				}
+				return visitor;
+			} catch (VisitorServiceException e) {
+				throw new VisitorServiceException("Internal Server Exception while getting exception");
+			}
+		}
+	}
+

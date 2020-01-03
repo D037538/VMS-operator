@@ -1,0 +1,7 @@
+package com.operator.model;
+
+public class Snippet {
+	public static void main(String[] args) { 
+	}
+}
+

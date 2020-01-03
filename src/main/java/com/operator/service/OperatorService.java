@@ -178,5 +178,15 @@ public class OperatorService {
 		operatorRepository.delete(operator);
 		return "delete successfully";
 	}
-	
+	//return employee as null
+		public Visitor getVisitorNull() throws VisitorServiceException {
+
+			return null;
+		}
+
+	    //throw exception
+		public Visitor getVisitorException() throws VisitorServiceException {
+
+			throw new VisitorServiceException();
+		}
 }
