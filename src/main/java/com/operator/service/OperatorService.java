@@ -103,6 +103,8 @@ public class OperatorService {
 		String visitorjson = mapper.writeValueAsString(visitorlist);
 		System.out.println("expense list is:" + visitorjson);
 		System.out.println("URL" + url);
+		
+// call microservice by using webclient				
 		/*
 		Alternative WebClient way
 		Movie movie = webClientBuilder.build().get().uri("http://localhost:8084/visitor/visitorList/"+id)

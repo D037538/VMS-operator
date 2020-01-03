@@ -9,6 +9,8 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.operator.cont.OpCon;
 import com.operator.dto.OperatorDto;
 import com.operator.model.Operator;
 import com.operator.model.Visitor;
@@ -47,7 +50,7 @@ public class OperatorController {
 	private VisitorRepository visitorRepository;
 	@Autowired
 	private RestTemplate restTemplate;
-
+	  private static final Logger logger = LogManager.getLogger(OperatorController.class);
 	/**
 	 * 
 	 * @param operatorDto
@@ -65,6 +68,10 @@ public class OperatorController {
 	 */
 	@GetMapping("/operators")
 	public List<Operator> getAllOperator() {
+		logger.debug("Debug message");
+		logger.info("Info message");
+		logger.warn("Warn message");
+		logger.error("Error message");
 		List<Operator> operator = operatorService.getAllOperator();
 		return operator;
 	}

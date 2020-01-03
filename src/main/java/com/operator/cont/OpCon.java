@@ -4,8 +4,13 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -29,21 +34,28 @@ import net.sf.jasperreports.engine.JRException;
 
 @RestController
 public class OpCon {
+	//private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	//private final Logger logger = LogManager.getLogger(OpCon.class);
+	  private static final Logger logger = LogManager.getLogger(OpCon.class);
 	@Autowired
 	private OperatorService operatorService;
 
 	@Autowired
 	private IVisitorService iVisitorService;
-/**
- * It views list of visitors
- * @return
- * @throws JsonProcessingException
- */
+
+	/**
+	 * It views list of visitors
+	 * 
+	 * @return
+	 * @throws JsonProcessingException
+	 */
 	@RequestMapping("/viewvisitorservice")
 	public ModelAndView viewstudents() throws JsonProcessingException {
+		
 		Visitor[] list = operatorService.getAllVisitorList();
 		return new ModelAndView("viewvisitorservice", "list", list);
 	}
+
 	/**
 	 * It views list of countries
 	 * 
@@ -63,7 +75,6 @@ public class OpCon {
 		return countries;
 	}
 
-
 	/* It opens the record for the given id in editvisitor page */
 	@RequestMapping(value = "/editvisitor/{id}")
 	public String edit(@PathVariable int id, ModelMap model) throws JsonProcessingException {
@@ -72,27 +83,31 @@ public class OpCon {
 		return "editvisitor";
 
 	}
+
 	/*
 	 * It updates record for the given id in editvisitor page and redirects to
 	 * /viewvisitorservice
 	 */
 	@RequestMapping(value = "/editsave", method = RequestMethod.POST)
-	public ModelAndView editsave(@ModelAttribute("visitor") Visitor visitor,HttpServletResponse response) throws IOException, SQLException, JRException {
+	public ModelAndView editsave(@ModelAttribute("visitor") Visitor visitor, HttpServletResponse response)
+			throws IOException, SQLException, JRException {
 		long id = visitor.getId();
 		operatorService.updateVisitorStatus(id);
-		//operatorService.ticketPrint(id,response);
+		// operatorService.ticketPrint(id,response);
 		return new ModelAndView("redirect:/viewvisitorservice");
 	}
-/**
- * It generate ticket print	
- * @param id
- * @param model
- * @param response
- * @return
- * @throws IOException
- * @throws SQLException
- * @throws JRException
- */
+
+	/**
+	 * It generate ticket print
+	 * 
+	 * @param id
+	 * @param model
+	 * @param response
+	 * @return
+	 * @throws IOException
+	 * @throws SQLException
+	 * @throws JRException
+	 */
 	@RequestMapping(value = "/printticket/{id}")
 	public String printTicket(@PathVariable int id, ModelMap model, HttpServletResponse response)
 			throws IOException, SQLException, JRException {
@@ -140,43 +155,44 @@ public class OpCon {
 		countries.add("Solapur ");
 		return countries;
 	}
-	//Happy path, an visitor is returned as response
-		@RequestMapping(value = "/visitor", method = RequestMethod.GET)
-		public Visitor[] getVisitor1() throws ResourceNotFoundException, VisitorServiceException, JsonProcessingException {
-			Visitor[] visitor =operatorService.getAllVisitorList();
 
+	// Happy path, an visitor is returned as response
+	@RequestMapping(value = "/visitor", method = RequestMethod.GET)
+	public Visitor[] getVisitor1() throws ResourceNotFoundException, VisitorServiceException, JsonProcessingException {
+		Visitor[] visitor = operatorService.getAllVisitorList();
+
+		if (visitor == null) {
+			throw new ResourceNotFoundException("Visitor not found");
+		}
+		return visitor;
+	}
+
+	// no visitor found so ResourceNotFoundException is thrown
+	@RequestMapping(value = "/visitor2", method = RequestMethod.GET)
+	public Visitor getVisitor2() throws ResourceNotFoundException, VisitorServiceException {
+		try {
+			Visitor visitor = operatorService.getVisitorNull();
+			if (visitor == null) {
+				throw new ResourceNotFoundException("Visitor not found");
+			}
+
+			return visitor;
+		} catch (VisitorServiceException e) {
+			throw new VisitorServiceException("Internal Server Exception while getting exception");
+		}
+	}
+
+	// Some exception is thrown by service layer
+	@RequestMapping(value = "/visitor3", method = RequestMethod.GET)
+	public Visitor getVisitor() throws ResourceNotFoundException, VisitorServiceException {
+		try {
+			Visitor visitor = operatorService.getVisitorException();
 			if (visitor == null) {
 				throw new ResourceNotFoundException("Visitor not found");
 			}
 			return visitor;
-		}
-	    //no visitor found so ResourceNotFoundException is thrown
-		@RequestMapping(value = "/visitor2", method = RequestMethod.GET)
-		public Visitor getVisitor2() throws ResourceNotFoundException, VisitorServiceException {
-			try {
-				Visitor visitor = operatorService.getVisitorNull();
-				if (visitor == null) {
-					throw new ResourceNotFoundException("Visitor not found");
-				}
-
-				return visitor;
-			} catch (VisitorServiceException e) {
-				throw new VisitorServiceException("Internal Server Exception while getting exception");
-			}
-		}
-		
-		 //Some exception is thrown by service layer
-		@RequestMapping(value = "/visitor3", method = RequestMethod.GET)
-		public Visitor getVisitor() throws ResourceNotFoundException, VisitorServiceException {
-			try {
-				Visitor visitor = operatorService.getVisitorException();
-				if (visitor == null) {
-					throw new ResourceNotFoundException("Visitor not found");
-				}
-				return visitor;
-			} catch (VisitorServiceException e) {
-				throw new VisitorServiceException("Internal Server Exception while getting exception");
-			}
+		} catch (VisitorServiceException e) {
+			throw new VisitorServiceException("Internal Server Exception while getting exception");
 		}
 	}
-
+}
