@@ -3,6 +3,7 @@ package com.operator.controller;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.operator.model.Ticket;
 import com.operator.model.Visitor;
+import com.operator.service.OperatorService;
 import com.operator.service.TicketService;
 
 /**
@@ -22,6 +24,24 @@ import com.operator.service.TicketService;
 public class TicketController {
 	@Autowired
 	private TicketService ticketService;
+	@Autowired
+	private OperatorService operatorService;
+
+	public TicketService getTicketService() {
+		return ticketService;
+	}
+
+	public void setTicketService(TicketService ticketService) {
+		this.ticketService = ticketService;
+	}
+
+	public OperatorService getOperatorService() {
+		return operatorService;
+	}
+
+	public void setOperatorService(OperatorService operatorService) {
+		this.operatorService = operatorService;
+	}
 
 	@PostMapping("/registerTicket")
 	public Ticket registerTicket(@RequestBody Ticket ticket, Visitor visitor) {
@@ -41,6 +61,32 @@ public class TicketController {
 	public List<Ticket> getAllTicket() throws JsonProcessingException {
 		List<Ticket> ticket = ticketService.getAllTicket();
 		return ticket;
+
+	}
+	@PostMapping("/visitorticket/{id}")
+	public Ticket findByVisitorIdTicket(@PathVariable Long id) throws JsonProcessingException {
+		System.out.println("id in controller is:" + id);
+		 Visitor visitor = operatorService.getListByVisitorId(id);
+		 Ticket ticket = new Ticket();
+		 ticket.setVisitor(visitor);
+		 ticket.setTicketName("Anushree");
+		 return ticketService.registerTicket(ticket);
+		/*
+		 * Visitor visitor = new Visitor(2, "Anushree", "anu@gmail.com", 0,
+		 * "9845671230", "Deola", "India", "Maharastra", "Pune", "adhar card", "Ekta",
+		 * "ekta@gmail.com", "naukari", "interview", 0);
+		 */
+		
+	
+		
+		//visitorRepository.save(visitor);
+		
+		/*
+		 * List<Visitor> visitor = visitorRepository.findAll();
+		 * 
+		 * ticket.setVisitor(visitor); System.out.println("id in ticket is:" + ticket);
+		 * ticketService.registerTicket(ticket);
+		 */
 
 	}
 

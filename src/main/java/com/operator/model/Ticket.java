@@ -21,111 +21,84 @@ import org.hibernate.annotations.CreationTimestamp;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name = "ticket")
+@Table(name = "ticket2")
 public class Ticket {
 	@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-private long ticketId;
-private String ticketName;
-public String getTicketName() {
-	return ticketName;
-}
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long ticketId;
+	private String ticketName;
 
+	public String getTicketName() {
+		return ticketName;
+	}
 
+	public void setTicketName(String ticketName) {
+		this.ticketName = ticketName;
+	}
 
-public void setTicketName(String ticketName) {
-	this.ticketName = ticketName;
-}
+	@CreationTimestamp
+	private LocalDateTime createDateTime;
 
+	@CreationTimestamp
+	private LocalTime inTime;
 
+	@CreationTimestamp
+	private Date outTime;
 
-@CreationTimestamp
-private LocalDateTime createDateTime;
+	public long getTicketId() {
+		return ticketId;
+	}
 
-@CreationTimestamp
-private LocalTime inTime;
+	public void setTicketId(long ticketId) {
+		this.ticketId = ticketId;
+	}
 
-@CreationTimestamp
-private Date outTime;
+	public LocalDateTime getCreateDateTime() {
+		return createDateTime;
+	}
 
+	public void setCreateDateTime(LocalDateTime createDateTime) {
+		this.createDateTime = createDateTime;
+	}
 
+	public LocalTime getInTime() {
+		return inTime;
+	}
 
-public long getTicketId() {
-	return ticketId;
-}
+	public void setInTime(LocalTime inTime) {
+		this.inTime = inTime;
+	}
 
+	public Date getOutTime() {
+		return outTime;
+	}
 
+	public void setOutTime(Date outTime) {
+		this.outTime = outTime;
+	}
 
-public void setTicketId(long ticketId) {
-	this.ticketId = ticketId;
-}
+	/*
+	 * @ManyToOne(fetch = FetchType.EAGER ,targetEntity = Visitor.class, cascade =
+	 * CascadeType.ALL)
+	 * 
+	 * @JsonBackReference
+	 * 
+	 * @JoinColumn(name = "visitor_id", referencedColumnName = "id") private Visitor
+	 * visitor;
+	 */
 
+	@OneToOne(cascade = CascadeType.MERGE)
 
+	@JoinColumn(name = "visitor_id")
+	private Visitor visitor;
 
-public LocalDateTime getCreateDateTime() {
-	return createDateTime;
-}
-
-
-
-public void setCreateDateTime(LocalDateTime createDateTime) {
-	this.createDateTime = createDateTime;
-}
-
-
-
-public LocalTime getInTime() {
-	return inTime;
-}
-
-
-
-public void setInTime(LocalTime inTime) {
-	this.inTime = inTime;
-}
-
-
-
-public Date getOutTime() {
-	return outTime;
-}
-
-
-
-public void setOutTime(Date outTime) {
-	this.outTime = outTime;
-}
-
-
-	
-	  @ManyToOne(fetch = FetchType.EAGER ,targetEntity = Visitor.class, cascade =
-	  CascadeType.ALL)
-	  
-	  @JsonBackReference
-	  
-	  @JoinColumn(name = "visitor_id", referencedColumnName = "id") private Visitor
-	  visitor;
 	public Visitor getVisitor() {
 		return visitor;
 	}
 
-
-
 	public void setVisitor(Visitor visitor) {
 		this.visitor = visitor;
 	}
-	 
-
-	/*
-	 * 
-	 * @OneToOne(cascade = CascadeType.ALL)
-	 * 
-	 * @JoinColumn(name = "visitor_id") private Optional<Visitor> visitor; public
-	 * Optional<Visitor> getVisitor() { return visitor; }
-	 */
-
-
 
 	
-
 }

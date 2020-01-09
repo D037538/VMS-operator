@@ -215,17 +215,11 @@ public class Visitor implements Serializable {
 
 	
 	
-	@OneToMany(mappedBy = "visitor")
-
-	 private List<Ticket> ticket;
-
-	public List<Ticket> getTicket() {
-		return ticket;
-	}
-
-	public void setTicket(List<Ticket> ticket) {
-		this.ticket = ticket;
-	}
+	/*
+	 * @OneToMany(mappedBy = "visitor")
+	 * 
+	 * private List<Ticket> ticket;
+	 */
 	
 	
 	
