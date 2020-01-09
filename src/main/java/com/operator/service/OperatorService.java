@@ -1,5 +1,7 @@
 package com.operator.service;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -69,12 +71,13 @@ public class OperatorService {
 	public List<Operator> getAllOperator() {
 		return operatorRepository.findAll();
 	}
-      
+
 	public Optional<Operator> getOperatorById(long id) {
-		
+
 		return operatorRepository.findById(id);
-		
+
 	}
+
 	/**
 	 * method for call visitor microservice get all visitor list
 	 * 
@@ -96,99 +99,99 @@ public class OperatorService {
 	public Visitor getListByVisitorId(long id) throws JsonProcessingException {
 		int status = 1;
 
-		String url = "http://localhost:8084/visitor/visitorList/"+id;
+		String url = "http://localhost:8084/visitor/visitorList/" + id;
 		Visitor visitorlist = restTemplate.getForObject(url, Visitor.class);
 		System.out.println("RESPONSE " + visitorlist.getStatus());
 		ObjectMapper mapper = new ObjectMapper();
 		String visitorjson = mapper.writeValueAsString(visitorlist);
 		System.out.println("expense list is:" + visitorjson);
 		System.out.println("URL" + url);
-		
+
 // call microservice by using webclient				
 		/*
-		Alternative WebClient way
-		Movie movie = webClientBuilder.build().get().uri("http://localhost:8084/visitor/visitorList/"+id)
-		.retrieve().bodyToMono(Visitor.class).block();
-		*/
+		 * Alternative WebClient way Movie movie = webClientBuilder.build().get().uri(
+		 * "http://localhost:8084/visitor/visitorList/"+id)
+		 * .retrieve().bodyToMono(Visitor.class).block();
+		 */
 		return visitorlist;
 
 	}
 
-/**
- * method for update status
- * @param id
- * @return
- */
-	public String updateVisitorStatus(long id) {
+	/**
+	 * method for update status
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public String updateVisitorStatus(long id, Visitor visitor) {
 		// TODO Auto-generated method stub
 		if (visitorRepository.findById(id).isPresent()) {
-			Visitor visitor = visitorRepository.findById(id).get();
-		
-					updateVisitor.updateStatusById(id);
-					//visitor.setStatus(1);
-				//Visitor updateVisitor = visitorRepository.save(visitor);
-			
+			Visitor visitor1 = visitorRepository.findById(id).get();
+
+			updateVisitor.updateStatusById(visitor, id);
+			// visitor.setStatus(1);
+			// Visitor updateVisitor = visitorRepository.save(visitor);
+
 		}
 		return "Visitor updated successfully";
 
 	}
 
-
-/**
- * method for generate Ticket print
- * @param id
- * @param response
- * @return
- * @throws IOException
- * @throws SQLException
- * @throws JRException
- */
+	/**
+	 * method for generate Ticket print
+	 * 
+	 * @param id
+	 * @param response
+	 * @return
+	 * @throws IOException
+	 * @throws SQLException
+	 * @throws JRException
+	 */
 	public int ticketPrint(long id, HttpServletResponse response) throws IOException, SQLException, JRException {
 		System.out.println("ticket visitor id" + id);
-		InputStream stream = getClass().getResourceAsStream("/TicketPrint.jrxml");
+		InputStream stream = getClass().getResourceAsStream("/TicketPrint_1.jrxml");
 		JasperReport jasperReport = JasperCompileManager.compileReport(stream);
 		Map<String, Object> params = new HashMap<>();
 		params.put("visitor_id", id);
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, conn);
 		JasperExportManager.exportReportToPdfStream(jasperPrint, response.getOutputStream());
+		
+		File pdf = File.createTempFile("output.", ".pdf");
+		JasperExportManager.exportReportToPdfStream(jasperPrint, new FileOutputStream(pdf));
 		response.getOutputStream().flush();
 		response.getOutputStream().close();
 		return 0;
 	}
 	
-	
-	public String sendMailToContactPerson()
-	{
-		//call email microservice
-		return "Mail send successfully";
-		
-	}
-	
+
+
 	/**
 	 * send mail to the visitor
 	 * 
 	 * @return
 	 */
-	public String sendMailToVIsitor() {
-		//call email microservice
-		return null;
+	public String sendMailToContactPrson() {
+		String url = "http://localhost:9090/mail/sendMail";
+		Visitor[] visitorlist = restTemplate.getForObject(url, Visitor[].class);
+		return "send mail to contact person";
 
 	}
 //http://localhost:8888/email/sendemail	
-	
+
 	public String deleteOperator(Operator operator) {
 		operatorRepository.delete(operator);
 		return "delete successfully";
 	}
-	//return employee as null
-		public Visitor getVisitorNull() throws VisitorServiceException {
 
-			return null;
-		}
+	// return employee as null
+	public Visitor getVisitorNull() throws VisitorServiceException {
 
-	    //throw exception
-		public Visitor getVisitorException() throws VisitorServiceException {
+		return null;
+	}
 
-			throw new VisitorServiceException();
-		}
+	// throw exception
+	public Visitor getVisitorException() throws VisitorServiceException {
+
+		throw new VisitorServiceException();
+	}
 }

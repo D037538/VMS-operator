@@ -3,6 +3,7 @@ package com.operator.dto;
 public class TicketDto {
 	private long id;
 	private String ticketName;
+	
 	public long getId() {
 		return id;
 	}

@@ -1,30 +1,38 @@
 package com.operator.model;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "visitor")
 public class Visitor implements Serializable {
-	  private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String name;
-	//private String bloodGroup;
-
+	// private String bloodGroup;
 
 	private String email;
 	private long mobileNo;
 	private String address;
 	private String country;
 	private String state;
+
 	public Visitor(long id, String name, String email, long mobileNo, String address, String country, String state,
 			String city, String idProof, String contactPersonName, String contactPersonEmail, String reference,
 			String reasonForVisit, String contactPersonMobile, int status) {
@@ -53,6 +61,7 @@ public class Visitor implements Serializable {
 	private String reference;
 	private String reasonForVisit;
 	private String contactPersonMobile;
+
 	public String getContactPersonMobile() {
 		return contactPersonMobile;
 	}
@@ -65,9 +74,9 @@ public class Visitor implements Serializable {
 		return serialVersionUID;
 	}
 
-	@Column(name = "status", nullable = false, columnDefinition = "int default 0") 
+	@Column(name = "status", nullable = false, columnDefinition = "int default 0")
 	private int status;
-	
+
 	public Visitor() {
 		super();
 	}
@@ -203,10 +212,46 @@ public class Visitor implements Serializable {
 	public void setStatus(int status) {
 		this.status = status;
 	}
+
+	
+	
+	@OneToMany(mappedBy = "visitor")
+
+	 private List<Ticket> ticket;
+
+	public List<Ticket> getTicket() {
+		return ticket;
+	}
+
+	public void setTicket(List<Ticket> ticket) {
+		this.ticket = ticket;
+	}
 	
 	
 	
+
+//	@OneToMany(fetch = FetchType.EAGER ,targetEntity = Ticket.class, cascade =
+//	  CascadeType.ALL)
+//	  
+//	private Ticket ticket;
+//
+//	public Ticket getTicket() {
+//		return ticket;
+//	}
+//
+//	public void setTicket(Ticket ticket) {
+//		this.ticket = ticket;
+//	}
 	
 	
 	
+//	  @JsonManagedReference
+//	  
+//	  @JoinColumn(name = "visitor_id", referencedColumnName = "id")//mnt_id private
+//	  Set ticket; public Set getTicket() { return ticket; }
+	  
+	  
+	  
+	 
+
 }

@@ -1,15 +1,11 @@
 package com.operator.controller;
 
-import java.awt.PageAttributes.MediaType;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,23 +13,21 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.operator.cont.OpCon;
-import com.operator.dto.OperatorDto;
 import com.operator.model.Operator;
+import com.operator.model.Ticket;
 import com.operator.model.Visitor;
 import com.operator.repository.VisitorRepository;
 import com.operator.service.OperatorService;
+import com.operator.service.TicketService;
 
 import net.sf.jasperreports.engine.JRException;
 
@@ -51,24 +45,29 @@ public class OperatorController {
 	private VisitorRepository visitorRepository;
 	@Autowired
 	private RestTemplate restTemplate;
-	  private static final Logger logger = LogManager.getLogger(OperatorController.class);
+	@Autowired
+	private TicketService ticketService;
+	private static final Logger logger = LogManager.getLogger(OperatorController.class);
+
 	/**
 	 * 
 	 * @param operatorDto
 	 * @return object of register object
 	 */
 	@PostMapping("/registerOperator")
-	public Operator registerOperator(@Valid@RequestBody Operator operator) {
+	public Operator registerOperator(@Valid @RequestBody Operator operator) {
 		return operatorService.registerOperator(operator);
 	}
-/*
- 
-	/**
+
+	/*
+	 * 
+	 * /**
 	 * 
 	 * @return list of all operators
 	 */
 	@GetMapping("/operators")
 	public List<Operator> getAllOperator() {
+
 		logger.debug("Debug message");
 		logger.info("Info message");
 		logger.warn("Warn message");
@@ -76,7 +75,7 @@ public class OperatorController {
 		List<Operator> operator = operatorService.getAllOperator();
 		return operator;
 	}
-	
+
 	/**
 	 * method for call visitor microservice get all visitor list
 	 * 
@@ -99,29 +98,57 @@ public class OperatorController {
 	 */
 	@GetMapping("/operators/{id}")
 	public ResponseEntity<Operator> findme(@PathVariable Integer id) throws JsonProcessingException {
-		Optional<Operator> operator=operatorService.getOperatorById(id);
-		if(operator==null) {
-			return new ResponseEntity<Operator> (HttpStatus.NOT_FOUND);
+		Optional<Operator> operator = operatorService.getOperatorById(id);
+		if (operator == null) {
+			return new ResponseEntity<Operator>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<Operator> (HttpStatus.OK);
+		return new ResponseEntity<Operator>(HttpStatus.OK);
 
 	}
+
 	@GetMapping("/visitor/{id}")
 	public Visitor findByVisitorId(@PathVariable Integer id) throws JsonProcessingException {
 		System.out.println("id in controller is:" + id);
 		return operatorService.getListByVisitorId(id);
 
 	}
+
+	@PostMapping("/visitorticket/{id}")
+	public Ticket findByVisitorIdTicket(@PathVariable Long id) throws JsonProcessingException {
+		System.out.println("id in controller is:" + id);
+		// Visitor visitor = operatorService.getListByVisitorId(id);
+		/*
+		 * Visitor visitor = new Visitor(2, "Anushree", "anu@gmail.com", 0,
+		 * "9845671230", "Deola", "India", "Maharastra", "Pune", "adhar card", "Ekta",
+		 * "ekta@gmail.com", "naukari", "interview", 0);
+		 */
+		Ticket ticket = new Ticket();
+		ticket.setTicketName("sdf");
+		
+		//visitorRepository.save(visitor);
+		
+		/*
+		 * List<Visitor> visitor = visitorRepository.findAll();
+		 * 
+		 * ticket.setVisitor(visitor); System.out.println("id in ticket is:" + ticket);
+		 * ticketService.registerTicket(ticket);
+		 */
+
+		return ticket;
+
+	}
+
 	/**
 	 * method for update visitor status by id
 	 * 
 	 * @param id
 	 * @return
 	 */
-	@PutMapping("/updateVisitor/{id}")
-	public String UpdateVisitorStatus(@PathVariable long id) {
-		return operatorService.updateVisitorStatus(id);
-	}
+	/*
+	 * @PutMapping("/updateVisitor/{id}") public String
+	 * UpdateVisitorStatus(@PathVariable long id) { //return
+	 * operatorService.updateVisitorStatus(id); }
+	 */
 
 	/**
 	 * methods for print token print
@@ -138,19 +165,18 @@ public class OperatorController {
 
 		System.out.println("visitor_id" + visitor_id);
 		operatorService.ticketPrint(visitor_id, response1);
-		operatorService.sendMailToContactPerson();
-	}
-	/**
+
+	}/**
 	 * 
 	 * @param visitor
 	 * @return
 	 */
 	@PostMapping("/registervisitor")
-	   public String createProducts(@RequestBody Visitor visitor) {
-	      HttpHeaders headers = new HttpHeaders();
-	       HttpEntity<Visitor> entity = new HttpEntity<Visitor>(visitor,headers);
-	      
-	      return restTemplate.exchange(
-	         "http://localhost:8084/visitor/addVisitor", HttpMethod.POST, entity, String.class).getBody();
-	   }
+	public String createProducts(@RequestBody Visitor visitor) {
+		HttpHeaders headers = new HttpHeaders();
+		HttpEntity<Visitor> entity = new HttpEntity<Visitor>(visitor, headers);
+
+		return restTemplate.exchange("http://localhost:8084/visitor/addVisitor", HttpMethod.POST, entity, String.class)
+				.getBody();
+	}
 }

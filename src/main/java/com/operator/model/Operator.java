@@ -1,6 +1,4 @@
 package com.operator.model;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,13 +13,12 @@ import javax.validation.constraints.NotEmpty;
 @Table(name = "operator")
 public class Operator {
 	
-	public Operator(long id, String operatorName, String operatorCode, @Email @NotEmpty String email, int i) {
-		super();
-		this.id = id;
-		this.operatorName = operatorName;
-		this.operatorCode = operatorCode;
-		this.email = email;
-	}
+	/*
+	 * public Operator(long id, String operatorName, String
+	 * operatorCode, @Email @NotEmpty String email, int i) { super(); this.id = id;
+	 * this.operatorName = operatorName; this.operatorCode = operatorCode;
+	 * this.email = email; }
+	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;

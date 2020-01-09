@@ -3,23 +3,41 @@ package com.operator.model;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Optional;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
-@Table
+@Table(name = "ticket")
 public class Ticket {
 	@Id
 @GeneratedValue(strategy = GenerationType.IDENTITY)
 private long ticketId;
+private String ticketName;
+public String getTicketName() {
+	return ticketName;
+}
+
+
+
+public void setTicketName(String ticketName) {
+	this.ticketName = ticketName;
+}
+
+
 
 @CreationTimestamp
 private LocalDateTime createDateTime;
@@ -79,21 +97,35 @@ public void setOutTime(Date outTime) {
 }
 
 
+	
+	  @ManyToOne(fetch = FetchType.EAGER ,targetEntity = Visitor.class, cascade =
+	  CascadeType.ALL)
+	  
+	  @JsonBackReference
+	  
+	  @JoinColumn(name = "visitor_id", referencedColumnName = "id") private Visitor
+	  visitor;
+	public Visitor getVisitor() {
+		return visitor;
+	}
 
-public Visitor getVisitor() {
-	return visitor;
-}
+
+
+	public void setVisitor(Visitor visitor) {
+		this.visitor = visitor;
+	}
+	 
+
+	/*
+	 * 
+	 * @OneToOne(cascade = CascadeType.ALL)
+	 * 
+	 * @JoinColumn(name = "visitor_id") private Optional<Visitor> visitor; public
+	 * Optional<Visitor> getVisitor() { return visitor; }
+	 */
 
 
 
-public void setVisitor(Visitor visitor) {
-	this.visitor = visitor;
-}
-
-
-
-@OneToOne(cascade = CascadeType.ALL)
-@JoinColumn(name = "visitor_id")
-private Visitor visitor;
+	
 
 }

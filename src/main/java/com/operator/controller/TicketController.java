@@ -1,22 +1,15 @@
 package com.operator.controller;
 
-import java.util.Collection;
 import java.util.List;
-
-import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.operator.dto.TicketDto;
-import com.operator.model.ExpenseCategory;
 import com.operator.model.Ticket;
+import com.operator.model.Visitor;
 import com.operator.service.TicketService;
 
 /**
@@ -31,9 +24,8 @@ public class TicketController {
 	private TicketService ticketService;
 
 	@PostMapping("/registerTicket")
-	public Ticket registerTicket(@RequestBody TicketDto ticketDto) {
-		// System.out.println("Expense name" + expenseCategoryDto.getCategoryName());
-		return ticketService.registerTicket(ticketDto);
+	public Ticket registerTicket(@RequestBody Ticket ticket, Visitor visitor) {
+		return ticketService.registerTicket(ticket);
 	}
 
 	/**
@@ -46,10 +38,10 @@ public class TicketController {
 	 */
 
 	@GetMapping("/tickets")
-	public Collection<Ticket> getAllTicket() throws JsonProcessingException {
+	public List<Ticket> getAllTicket() throws JsonProcessingException {
 		List<Ticket> ticket = ticketService.getAllTicket();
 		return ticket;
-		
+
 	}
 
 }

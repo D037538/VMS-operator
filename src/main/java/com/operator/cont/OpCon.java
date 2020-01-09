@@ -32,17 +32,17 @@ import com.operator.service.VisitorServiceException;
 
 import net.sf.jasperreports.engine.JRException;
 
-@RestController
+//@RestController
+@Controller
 public class OpCon {
-	//private final Logger logger = LoggerFactory.getLogger(this.getClass());
-	//private final Logger logger = LogManager.getLogger(OpCon.class);
-	  private static final Logger logger = LogManager.getLogger(OpCon.class);
+	// private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	// private final Logger logger = LogManager.getLogger(OpCon.class);
+	private static final Logger logger = LogManager.getLogger(OpCon.class);
 	@Autowired
 	private OperatorService operatorService;
 
 	@Autowired
 	private IVisitorService iVisitorService;
-
 	/**
 	 * It views list of visitors
 	 * 
@@ -51,7 +51,7 @@ public class OpCon {
 	 */
 	@RequestMapping("/viewvisitorservice")
 	public ModelAndView viewstudents() throws JsonProcessingException {
-		
+
 		Visitor[] list = operatorService.getAllVisitorList();
 		return new ModelAndView("viewvisitorservice", "list", list);
 	}
@@ -92,8 +92,19 @@ public class OpCon {
 	public ModelAndView editsave(@ModelAttribute("visitor") Visitor visitor, HttpServletResponse response)
 			throws IOException, SQLException, JRException {
 		long id = visitor.getId();
-		operatorService.updateVisitorStatus(id);
+		String toemail = visitor.getContactPersonEmail();
+		System.out.println("Pint id in controller" + toemail);
+		operatorService.updateVisitorStatus(id, visitor);
 		// operatorService.ticketPrint(id,response);
+		return new ModelAndView("redirect:/viewvisitorservice");
+	}
+
+	@RequestMapping(value = "/sendemail", method = RequestMethod.POST)
+	public ModelAndView emailSend(@ModelAttribute("visitor") Visitor visitor, HttpServletResponse response)
+			throws IOException, SQLException, JRException {
+		String toemail = visitor.getContactPersonEmail();
+		String subject = visitor.getReasonForVisit();
+		System.out.println("Pint id in controller" + toemail);
 		return new ModelAndView("redirect:/viewvisitorservice");
 	}
 
@@ -109,11 +120,23 @@ public class OpCon {
 	 * @throws JRException
 	 */
 	@RequestMapping(value = "/printticket/{id}")
-	public String printTicket(@PathVariable int id, ModelMap model, HttpServletResponse response)
-			throws IOException, SQLException, JRException {
-		System.out.println("Pint id in controller" + id);
-		int visitor = operatorService.ticketPrint(id, response);
-		model.addAttribute("visitor", visitor);
+	public String printTicket(@PathVariable int id, ModelMap model, HttpServletResponse response,
+			@ModelAttribute("visitor") Visitor visitor) throws IOException, SQLException, JRException {
+		String toemail = visitor.getContactPersonEmail();
+		//String status=
+		System.out.println("Pint id in controller" + toemail);
+		int visitor1 = operatorService.ticketPrint(id, response);
+		operatorService.sendMailToContactPrson();
+		/*
+		 * String bodyMsg= "Hello"+" "+visitor.getContactPersonName()+","+
+		 * 
+		 * "\n" + " Following visitor want to meet you regarding  :"+ "\n"+"Name : Rama"
+		 * + "\n"+"Purpose : Meeting"+ "\n"+" "+"\n"+"\n"+" "+"\n"+
+		 * "Thanks and regards,"+"\n";
+		 * smtpMailSender.send(visitor.getContactPersonEmail(),bodyMsg,visitor.
+		 * getReasonForVisit());
+		 */
+		model.addAttribute("visitor", visitor1);
 		return "editvisitor";
 
 	}

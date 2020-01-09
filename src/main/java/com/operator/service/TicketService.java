@@ -13,9 +13,14 @@ import com.operator.repository.TicketRepository;
 public class TicketService {
 	@Autowired 
 	private TicketRepository ticketRepository;
-	public Ticket registerTicket(TicketDto ticketDto) {
-		Ticket ticket = new Ticket();
-		//ticket.setTicketName(ticketDto.getTicketName());
+	public Ticket registerTicket(Ticket ticket) {
+		/*
+		 * Ticket ticket = new Ticket();
+		 * ticket.setTicketName(ticketDto.getTicketName());
+		 *///	ticket.setVisitor(visitor);
+		//t1.setVisitor(new Visitor(visitorDto.getName()))
+		
+		
 		ticketRepository.save(ticket);
 		return ticket;
 	}
