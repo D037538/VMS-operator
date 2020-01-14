@@ -119,7 +119,7 @@ public class OpCon {
 	 * @throws SQLException
 	 * @throws JRException
 	 */
-	@RequestMapping(value = "/printticket/{id}")
+/*	@RequestMapping(value = "/printticket/{id}")
 	public String printTicket(@PathVariable int id, ModelMap model, HttpServletResponse response,
 			@ModelAttribute("visitor") Visitor visitor) throws IOException, SQLException, JRException {
 		String toemail = visitor.getContactPersonEmail();
@@ -127,19 +127,10 @@ public class OpCon {
 		System.out.println("Pint id in controller" + toemail);
 		int visitor1 = operatorService.ticketPrint(id, response);
 		operatorService.sendMailToContactPrson();
-		/*
-		 * String bodyMsg= "Hello"+" "+visitor.getContactPersonName()+","+
-		 * 
-		 * "\n" + " Following visitor want to meet you regarding  :"+ "\n"+"Name : Rama"
-		 * + "\n"+"Purpose : Meeting"+ "\n"+" "+"\n"+"\n"+" "+"\n"+
-		 * "Thanks and regards,"+"\n";
-		 * smtpMailSender.send(visitor.getContactPersonEmail(),bodyMsg,visitor.
-		 * getReasonForVisit());
-		 */
 		model.addAttribute("visitor", visitor1);
 		return "editvisitor";
 
-	}
+	}*/
 
 	/**
 	 * It views list of states

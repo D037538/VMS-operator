@@ -3,9 +3,14 @@ package com.operator.repository;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -45,5 +50,26 @@ public class UpdateVisitor {
 		 */	
 		em.merge(visitor);
 		}
+	public List<Visitor> searchVisitor(Visitor visitor) {
+		
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Visitor> cq = cb.createQuery(Visitor.class);
+		Root<Visitor> user = cq.from(Visitor.class);
+		
+		List<Predicate> predicates = new ArrayList<>();
+		
+		if(visitor.getName()!=null) {
+			predicates.add(cb.like(user.get("name"), visitor.getName()));
+		}
+		
+		if (visitor.getEmail() != null) {
+			predicates.add(cb.like(user.get("email"), visitor.getEmail()));
+		}
 
+
+		cq.where(predicates.stream().iterator().next());
+		TypedQuery<Visitor> query = em.createQuery(cq);
+		//log.debug("Query: " + query);
+		return query.getResultList();
+	}
 }

@@ -63,31 +63,15 @@ public class TicketController {
 		return ticket;
 
 	}
+
 	@PostMapping("/visitorticket/{id}")
 	public Ticket findByVisitorIdTicket(@PathVariable Long id) throws JsonProcessingException {
 		System.out.println("id in controller is:" + id);
-		 Visitor visitor = operatorService.getListByVisitorId(id);
-		 Ticket ticket = new Ticket();
-		 ticket.setVisitor(visitor);
-		 ticket.setTicketName("Anushree");
-		 return ticketService.registerTicket(ticket);
-		/*
-		 * Visitor visitor = new Visitor(2, "Anushree", "anu@gmail.com", 0,
-		 * "9845671230", "Deola", "India", "Maharastra", "Pune", "adhar card", "Ekta",
-		 * "ekta@gmail.com", "naukari", "interview", 0);
-		 */
-		
-	
-		
-		//visitorRepository.save(visitor);
-		
-		/*
-		 * List<Visitor> visitor = visitorRepository.findAll();
-		 * 
-		 * ticket.setVisitor(visitor); System.out.println("id in ticket is:" + ticket);
-		 * ticketService.registerTicket(ticket);
-		 */
-
+		Visitor visitor = operatorService.getListByVisitorId(id);
+		Ticket ticket = new Ticket();
+		ticket.setVisitor(visitor);
+		ticket.setTicketName("Anushree");
+		return ticketService.registerTicket(ticket);
 	}
 
 }

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JasperExportManager;
 import org.apache.jasper.JasperException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -85,7 +86,7 @@ public class OperatorService {
 	 * @throws JsonProcessingException
 	 */
 	public Visitor[] getAllVisitorList() throws JsonProcessingException {
-		String url = "http://localhost:8084/visitor/visitorList";
+		String url = "http://localhost:8888/visitor/visitorslist";
 		Visitor[] visitorlist = restTemplate.getForObject(url, Visitor[].class);
 		return visitorlist;
 	}
@@ -99,7 +100,7 @@ public class OperatorService {
 	public Visitor getListByVisitorId(long id) throws JsonProcessingException {
 		int status = 1;
 
-		String url = "http://localhost:8084/visitor/visitorList/" + id;
+		String url = "http://localhost:8888/visitor/visitorslist/" + id;
 		Visitor visitorlist = restTemplate.getForObject(url, Visitor.class);
 		System.out.println("RESPONSE " + visitorlist.getStatus());
 		ObjectMapper mapper = new ObjectMapper();
@@ -147,7 +148,7 @@ public class OperatorService {
 	 * @throws SQLException
 	 * @throws JRException
 	 */
-	public int ticketPrint(long id, HttpServletResponse response) throws IOException, SQLException, JRException {
+	public void ticketPrint(long id, HttpServletResponse response) throws IOException, SQLException, JRException {
 		System.out.println("ticket visitor id" + id);
 		InputStream stream = getClass().getResourceAsStream("/TicketPrint_1.jrxml");
 		JasperReport jasperReport = JasperCompileManager.compileReport(stream);
@@ -160,7 +161,7 @@ public class OperatorService {
 		JasperExportManager.exportReportToPdfStream(jasperPrint, new FileOutputStream(pdf));
 		response.getOutputStream().flush();
 		response.getOutputStream().close();
-		return 0;
+		
 	}
 	
 
@@ -171,7 +172,7 @@ public class OperatorService {
 	 * @return
 	 */
 	public String sendMailToContactPrson() {
-		String url = "http://localhost:9090/mail/sendMail";
+		String url = "http://localhost:9090/visitor/sendMail";
 		Visitor[] visitorlist = restTemplate.getForObject(url, Visitor[].class);
 		return "send mail to contact person";
 
@@ -180,6 +181,10 @@ public class OperatorService {
 
 	public String deleteOperator(Operator operator) {
 		operatorRepository.delete(operator);
+		return "delete successfully";
+	}
+	public String deleteByIdVisitor(long id) {
+		visitorRepository.deleteById(id);
 		return "delete successfully";
 	}
 
@@ -193,5 +198,10 @@ public class OperatorService {
 	public Visitor getVisitorException() throws VisitorServiceException {
 
 		throw new VisitorServiceException();
+	}
+	public List<Visitor> searchVisitor(Visitor visitor) {
+		// TODO Auto-generated method stub
+		 return updateVisitor.searchVisitor(visitor);
+		
 	}
 }

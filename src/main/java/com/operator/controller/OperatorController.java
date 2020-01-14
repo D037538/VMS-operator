@@ -14,9 +14,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,6 +31,7 @@ import com.operator.repository.VisitorRepository;
 import com.operator.service.OperatorService;
 import com.operator.service.TicketService;
 
+import javassist.bytecode.ByteArray;
 import net.sf.jasperreports.engine.JRException;
 
 @RestController
@@ -59,6 +62,11 @@ public class OperatorController {
 		return operatorService.registerOperator(operator);
 	}
 
+	@PostMapping("/registerVisitor")
+	public Visitor registerVisitor(@RequestBody Visitor visitor) {
+		return visitorRepository.save(visitor);
+	}
+
 	/*
 	 * 
 	 * /**
@@ -82,7 +90,7 @@ public class OperatorController {
 	 * @return
 	 * @throws JsonProcessingException
 	 */
-	@GetMapping(value = "/visitorList", consumes = "application/json;charset=UTF-8")
+	@GetMapping("/visitorList")
 	public Visitor[] printTicket() throws JsonProcessingException {
 		Visitor[] visitorlist = operatorService.getAllVisitorList();
 		return visitorlist;
@@ -90,12 +98,8 @@ public class OperatorController {
 	}
 
 	/**
-	 * method for get visitor by id
-	 * 
-	 * @param id
-	 * @return record by visitor id
-	 * @throws JsonProcessingException
-	 */
+	 * method for get operator by id
+		 */
 	@GetMapping("/operators/{id}")
 	public ResponseEntity<Operator> findme(@PathVariable Integer id) throws JsonProcessingException {
 		Optional<Operator> operator = operatorService.getOperatorById(id);
@@ -105,7 +109,9 @@ public class OperatorController {
 		return new ResponseEntity<Operator>(HttpStatus.OK);
 
 	}
-
+/*
+ * method for get visitor by id
+ */
 	@GetMapping("/visitor/{id}")
 	public Visitor findByVisitorId(@PathVariable Integer id) throws JsonProcessingException {
 		System.out.println("id in controller is:" + id);
@@ -113,43 +119,20 @@ public class OperatorController {
 
 	}
 
-	/*
-	 * @PostMapping("/visitorticket/{id}") public Ticket
-	 * findByVisitorIdTicket(@PathVariable Long id) throws JsonProcessingException {
-	 * System.out.println("id in controller is:" + id); // Visitor visitor =
-	 * operatorService.getListByVisitorId(id);
-	 * 
-	 * Visitor visitor = new Visitor(2, "Anushree", "anu@gmail.com", 0,
-	 * "9845671230", "Deola", "India", "Maharastra", "Pune", "adhar card", "Ekta",
-	 * "ekta@gmail.com", "naukari", "interview", 0);
-	 * 
-	 * Ticket ticket = new Ticket(); ticket.setTicketName("sdf");
-	 * 
-	 * //visitorRepository.save(visitor);
-	 * 
-	 * 
-	 * List<Visitor> visitor = visitorRepository.findAll();
-	 * 
-	 * ticket.setVisitor(visitor); System.out.println("id in ticket is:" + ticket);
-	 * ticketService.registerTicket(ticket);
-	 * 
-	 * 
-	 * return ticket;
-	 * 
-	 * }
-	 */
 
 	/**
-	 * method for update visitor status by id
+	 * method for delete visitor by id
 	 * 
 	 * @param id
 	 * @return
 	 */
-	/*
-	 * @PutMapping("/updateVisitor/{id}") public String
-	 * UpdateVisitorStatus(@PathVariable long id) { //return
-	 * operatorService.updateVisitorStatus(id); }
-	 */
+
+	@DeleteMapping("/deleteVisitor/{id}")
+	public String deleteVisitor(@PathVariable long id) { // return
+
+		operatorService.deleteByIdVisitor(id);
+		return "Visitor deleted successfully";
+	}
 
 	/**
 	 * methods for print token print
@@ -161,16 +144,14 @@ public class OperatorController {
 	 * @throws SQLException
 	 */
 	@GetMapping("/printToken/{id}")
-	public void getRpt1(HttpServletResponse response, @PathVariable int visitor_id, HttpServletResponse response1)
+	public void getRpt1(HttpServletResponse response, @PathVariable int id, HttpServletResponse response1)
 			throws JRException, IOException, SQLException {
-
-		System.out.println("visitor_id" + visitor_id);
-		operatorService.ticketPrint(visitor_id, response1);
+		operatorService.ticketPrint(id, response1);
 
 	}
 
 	/**
-	 * 
+	 * call visitor registerVisitor microservice
 	 * @param visitor
 	 * @return
 	 */
@@ -181,5 +162,14 @@ public class OperatorController {
 
 		return restTemplate.exchange("http://localhost:8084/visitor/addVisitor", HttpMethod.POST, entity, String.class)
 				.getBody();
+	}
+/**
+ * methor for search visitor by id ,name,email
+ * @param visitor
+ * @return
+ */
+	@PostMapping("/search")
+	public List<Visitor> searchVisitor(@RequestBody Visitor visitor) {
+		return operatorService.searchVisitor(visitor);
 	}
 }
