@@ -78,13 +78,13 @@ public class Ticket {
 	}
 
 	/*
-	 * @ManyToOne(fetch = FetchType.EAGER ,targetEntity = Visitor.class, cascade =
-	 * CascadeType.ALL)
+	 * @ManyToOne(fetch = FetchType.EAGER ,targetEntity = Visitor.class, cascade
+	 * = CascadeType.ALL)
 	 * 
 	 * @JsonBackReference
 	 * 
-	 * @JoinColumn(name = "visitor_id", referencedColumnName = "id") private Visitor
-	 * visitor;
+	 * @JoinColumn(name = "visitor_id", referencedColumnName = "id") private
+	 * Visitor visitor;
 	 */
 
 	@OneToOne(cascade = CascadeType.MERGE)
@@ -100,5 +100,4 @@ public class Ticket {
 		this.visitor = visitor;
 	}
 
-	
 }

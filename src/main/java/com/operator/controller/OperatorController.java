@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.operator.model.Employee;
 import com.operator.model.Operator;
 import com.operator.model.Ticket;
 import com.operator.model.Visitor;
@@ -99,7 +100,7 @@ public class OperatorController {
 
 	/**
 	 * method for get operator by id
-		 */
+	 */
 	@GetMapping("/operators/{id}")
 	public ResponseEntity<Operator> findme(@PathVariable Integer id) throws JsonProcessingException {
 		Optional<Operator> operator = operatorService.getOperatorById(id);
@@ -109,9 +110,10 @@ public class OperatorController {
 		return new ResponseEntity<Operator>(HttpStatus.OK);
 
 	}
-/*
- * method for get visitor by id
- */
+
+	/*
+	 * method for get visitor by id
+	 */
 	@GetMapping("/visitor/{id}")
 	public Visitor findByVisitorId(@PathVariable Integer id) throws JsonProcessingException {
 		System.out.println("id in controller is:" + id);
@@ -119,6 +121,18 @@ public class OperatorController {
 
 	}
 
+	/*
+	 * method for get visitor by id
+	 */
+	@GetMapping("/emp/{id}")
+	public Optional<Employee> findByEmpId(@PathVariable Long id) throws JsonProcessingException {
+
+		Optional<Employee> emplist = operatorService.getEmployeeById(id);
+		System.out.println("Mobile no is:" + emplist.get().getMobileNo());
+
+		return operatorService.getEmployeeById(id);
+
+	}
 
 	/**
 	 * method for delete visitor by id
@@ -152,6 +166,7 @@ public class OperatorController {
 
 	/**
 	 * call visitor registerVisitor microservice
+	 * 
 	 * @param visitor
 	 * @return
 	 */
@@ -163,11 +178,13 @@ public class OperatorController {
 		return restTemplate.exchange("http://localhost:8084/visitor/addVisitor", HttpMethod.POST, entity, String.class)
 				.getBody();
 	}
-/**
- * methor for search visitor by id ,name,email
- * @param visitor
- * @return
- */
+
+	/**
+	 * methor for search visitor by id ,name,email
+	 * 
+	 * @param visitor
+	 * @return
+	 */
 	@PostMapping("/search")
 	public List<Visitor> searchVisitor(@RequestBody Visitor visitor) {
 		return operatorService.searchVisitor(visitor);

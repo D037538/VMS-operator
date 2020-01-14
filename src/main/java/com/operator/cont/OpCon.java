@@ -43,6 +43,7 @@ public class OpCon {
 
 	@Autowired
 	private IVisitorService iVisitorService;
+
 	/**
 	 * It views list of visitors
 	 * 
@@ -119,18 +120,21 @@ public class OpCon {
 	 * @throws SQLException
 	 * @throws JRException
 	 */
-/*	@RequestMapping(value = "/printticket/{id}")
-	public String printTicket(@PathVariable int id, ModelMap model, HttpServletResponse response,
-			@ModelAttribute("visitor") Visitor visitor) throws IOException, SQLException, JRException {
-		String toemail = visitor.getContactPersonEmail();
-		//String status=
-		System.out.println("Pint id in controller" + toemail);
-		int visitor1 = operatorService.ticketPrint(id, response);
-		operatorService.sendMailToContactPrson();
-		model.addAttribute("visitor", visitor1);
-		return "editvisitor";
-
-	}*/
+	/*
+	 * @RequestMapping(value = "/printticket/{id}") public String
+	 * printTicket(@PathVariable int id, ModelMap model, HttpServletResponse
+	 * response,
+	 * 
+	 * @ModelAttribute("visitor") Visitor visitor) throws IOException,
+	 * SQLException, JRException { String toemail =
+	 * visitor.getContactPersonEmail(); //String status=
+	 * System.out.println("Pint id in controller" + toemail); int visitor1 =
+	 * operatorService.ticketPrint(id, response);
+	 * operatorService.sendMailToContactPrson(); model.addAttribute("visitor",
+	 * visitor1); return "editvisitor";
+	 * 
+	 * }
+	 */
 
 	/**
 	 * It views list of states

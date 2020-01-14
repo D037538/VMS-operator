@@ -12,14 +12,15 @@ public interface IVisitorService {
 
 	String addVisitor(VisitorDto visitorDto);
 
-//	List<Visitor> visitorList();
+	// List<Visitor> visitorList();
 
-//	Visitor GetByIdIn(long id);
-	public List<Visitor> updateStatus() ;
-	//ResponseEntity<Visitor> GetByIdIn(Integer id);
+	// Visitor GetByIdIn(long id);
+	public List<Visitor> updateStatus();
+	// ResponseEntity<Visitor> GetByIdIn(Integer id);
 
-	//Visitor getVisitorById(long id);
+	// Visitor getVisitorById(long id);
 	public Visitor sendMailToContactPerson(long id) throws JsonProcessingException;
+
 	public Visitor updateVesitorStatus(long id, VisitorDto visitorDto);
 
 }

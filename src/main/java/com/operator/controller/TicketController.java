@@ -63,7 +63,12 @@ public class TicketController {
 		return ticket;
 
 	}
-
+/**
+ * method for generate ticket
+ * @param id
+ * @return
+ * @throws JsonProcessingException
+ */
 	@PostMapping("/visitorticket/{id}")
 	public Ticket findByVisitorIdTicket(@PathVariable Long id) throws JsonProcessingException {
 		System.out.println("id in controller is:" + id);

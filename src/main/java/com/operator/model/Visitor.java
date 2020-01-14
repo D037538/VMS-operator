@@ -213,39 +213,30 @@ public class Visitor implements Serializable {
 		this.status = status;
 	}
 
-	
-	
 	/*
 	 * @OneToMany(mappedBy = "visitor")
 	 * 
 	 * private List<Ticket> ticket;
 	 */
-	
-	
-	
 
-//	@OneToMany(fetch = FetchType.EAGER ,targetEntity = Ticket.class, cascade =
-//	  CascadeType.ALL)
-//	  
-//	private Ticket ticket;
-//
-//	public Ticket getTicket() {
-//		return ticket;
-//	}
-//
-//	public void setTicket(Ticket ticket) {
-//		this.ticket = ticket;
-//	}
-	
-	
-	
-//	  @JsonManagedReference
-//	  
-//	  @JoinColumn(name = "visitor_id", referencedColumnName = "id")//mnt_id private
-//	  Set ticket; public Set getTicket() { return ticket; }
-	  
-	  
-	  
-	 
+	// @OneToMany(fetch = FetchType.EAGER ,targetEntity = Ticket.class, cascade
+	// =
+	// CascadeType.ALL)
+	//
+	// private Ticket ticket;
+	//
+	// public Ticket getTicket() {
+	// return ticket;
+	// }
+	//
+	// public void setTicket(Ticket ticket) {
+	// this.ticket = ticket;
+	// }
+
+	// @JsonManagedReference
+	//
+	// @JoinColumn(name = "visitor_id", referencedColumnName = "id")//mnt_id
+	// private
+	// Set ticket; public Set getTicket() { return ticket; }
 
 }

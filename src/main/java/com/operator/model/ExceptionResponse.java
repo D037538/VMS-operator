@@ -1,4 +1,5 @@
 package com.operator.model;
+
 public class ExceptionResponse {
 
 	private String errorMessage;

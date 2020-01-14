@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 /**
  * The persistent class for the student database table.
  * 
@@ -23,34 +22,32 @@ import java.util.List;
 public class Student implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Email @NotEmpty
+	@Email
+	@NotEmpty
 	private String email;
-	
+
 	@NotEmpty
 	private String country;
 
-	
 	private boolean firstAttempt;
 
-	@Size(min=3, max=30)
+	@Size(min = 3, max = 30)
 	private String firstName;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Size(min=3, max=30)
+	@Size(min = 3, max = 30)
 	private String lastName;
 	@NotEmpty
 	private String section;
 
 	@NotEmpty
 	private String sex;
-	
-	   @NotEmpty
-	    private List<String> subjects = new ArrayList<String>();
 
-	
+	@NotEmpty
+	private List<String> subjects = new ArrayList<String>();
 
 	public String getEmail() {
 		return this.email;
@@ -68,15 +65,13 @@ public class Student implements Serializable {
 		this.country = country;
 	}
 
+	public boolean isFirstAttempt() {
+		return firstAttempt;
+	}
 
-
-	 public boolean isFirstAttempt() {
-	        return firstAttempt;
-	    }
-	 
-	    public void setFirstAttempt(boolean firstAttempt) {
-	        this.firstAttempt = firstAttempt;
-	    }
+	public void setFirstAttempt(boolean firstAttempt) {
+		this.firstAttempt = firstAttempt;
+	}
 
 	public String getFirstName() {
 		return this.firstName;
@@ -119,13 +114,11 @@ public class Student implements Serializable {
 	}
 
 	public List<String> getSubjects() {
-        return subjects;
-    }
- 
-    public void setSubjects(List<String> subjects) {
-        this.subjects = subjects;
-    }
-	
-	
+		return subjects;
+	}
+
+	public void setSubjects(List<String> subjects) {
+		this.subjects = subjects;
+	}
 
 }

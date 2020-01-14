@@ -27,8 +27,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jasper.DBconnection;
 import com.operator.dto.OperatorDto;
+import com.operator.model.Employee;
 import com.operator.model.Operator;
 import com.operator.model.Visitor;
+import com.operator.repository.EmpRepository;
 import com.operator.repository.OperatorRepository;
 import com.operator.repository.UpdateVisitor;
 import com.operator.repository.VisitorRepository;
@@ -48,6 +50,8 @@ public class OperatorService {
 	private RestTemplate restTemplate;
 	@Autowired
 	private WebClient.Builder webClientBuilder;
+	@Autowired
+	private EmpRepository empRepository;
 
 	/**
 	 * method for register operator
@@ -76,6 +80,12 @@ public class OperatorService {
 	public Optional<Operator> getOperatorById(long id) {
 
 		return operatorRepository.findById(id);
+
+	}
+
+	public Optional<Employee> getEmployeeById(long id) {
+
+		return empRepository.findById(id);
 
 	}
 
@@ -108,9 +118,10 @@ public class OperatorService {
 		System.out.println("expense list is:" + visitorjson);
 		System.out.println("URL" + url);
 
-// call microservice by using webclient				
+		// call microservice by using webclient
 		/*
-		 * Alternative WebClient way Movie movie = webClientBuilder.build().get().uri(
+		 * Alternative WebClient way Movie movie =
+		 * webClientBuilder.build().get().uri(
 		 * "http://localhost:8084/visitor/visitorList/"+id)
 		 * .retrieve().bodyToMono(Visitor.class).block();
 		 */
@@ -156,15 +167,13 @@ public class OperatorService {
 		params.put("visitor_id", id);
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, conn);
 		JasperExportManager.exportReportToPdfStream(jasperPrint, response.getOutputStream());
-		
+
 		File pdf = File.createTempFile("output.", ".pdf");
 		JasperExportManager.exportReportToPdfStream(jasperPrint, new FileOutputStream(pdf));
 		response.getOutputStream().flush();
 		response.getOutputStream().close();
-		
-	}
-	
 
+	}
 
 	/**
 	 * send mail to the visitor
@@ -177,12 +186,13 @@ public class OperatorService {
 		return "send mail to contact person";
 
 	}
-//http://localhost:8888/email/sendemail	
+	// http://localhost:8888/email/sendemail
 
 	public String deleteOperator(Operator operator) {
 		operatorRepository.delete(operator);
 		return "delete successfully";
 	}
+
 	public String deleteByIdVisitor(long id) {
 		visitorRepository.deleteById(id);
 		return "delete successfully";
@@ -199,9 +209,10 @@ public class OperatorService {
 
 		throw new VisitorServiceException();
 	}
+
 	public List<Visitor> searchVisitor(Visitor visitor) {
 		// TODO Auto-generated method stub
-		 return updateVisitor.searchVisitor(visitor);
-		
+		return updateVisitor.searchVisitor(visitor);
+
 	}
 }
